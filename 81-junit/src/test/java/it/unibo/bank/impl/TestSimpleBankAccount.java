@@ -55,7 +55,7 @@ public class TestSimpleBankAccount {
             bankAccount.deposit(aBianchi.getUserID(), 10000);
             Assertions.fail();
         } catch (IllegalArgumentException e) {
-            Assertions.assertEquals("ID not corresponding: cannot perform transaction.", e.getMessage());
+            Assertions.assertEquals("ID not corresponding: cannot perform transaction", e.getMessage());
         }
         // Alternative (with reflection): Assertions.assertThrows
     }
