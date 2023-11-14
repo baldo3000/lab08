@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import it.unibo.deathnote.api.DeathNote;
+import it.unibo.deathnote.impl.DeathNoteImpl;
 
 class TestDeathNote {
 
@@ -76,8 +77,8 @@ class TestDeathNote {
         try {
             this.note.writeDeathCause(DEATH_CAUSE1);
             fail("Assigning death cause without any name written");
-        } catch (IllegalArgumentException e) {
-            assertEquals("Can't assign death cause because there's no name written in the note", e.getMessage());
+        } catch (IllegalStateException e) {
+            assertEquals("There are no names written in the note", e.getMessage());
         }
         this.note.writeName(NAME1);
         assertEquals(DEFAULT_CAUSE, this.note.getDeathCause(NAME1));
@@ -99,11 +100,11 @@ class TestDeathNote {
         try {
             this.note.writeDetails(DETAILS1);
             fail("Writing death details without any name written");
-        } catch (IllegalArgumentException e) {
-            assertEquals("Can't write death details because there's no name written in the note", e.getMessage());
+        } catch (IllegalStateException e) {
+            assertEquals("There are no names written in the note", e.getMessage());
         }
         this.note.writeName(NAME1);
-        assertEquals(DEFAULT_DETAILS, this.note.getDeathCause(NAME1));
+        assertEquals(DEFAULT_DETAILS, this.note.getDeathDetails(NAME1));
         assertTrue(this.note.writeDetails(DETAILS1));
         assertEquals(DETAILS1, this.note.getDeathDetails(NAME1));
         this.note.writeName(NAME2);
@@ -111,7 +112,7 @@ class TestDeathNote {
         assertFalse(this.note.writeDetails(DETAILS2));
         assertEquals(DEFAULT_DETAILS, this.note.getDeathDetails(NAME2));
         try {
-            this.note.getDeathCause(NAME3);
+            this.note.getDeathDetails(NAME3);
             fail("Trying to get death details from a person that's not written in the note");
         } catch (IllegalArgumentException e) {
             assertEquals("Person \"" + NAME3 + "\" is not written in the note", e.getMessage());
